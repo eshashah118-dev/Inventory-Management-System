@@ -1,0 +1,25 @@
+package inventorysystem;
+
+import java.time.LocalDateTime;
+
+public class PurchaseOrder {
+    private static int count = 1;
+    private int id;
+    private Product product;
+    private Supplier supplier;
+    private int quantity;
+    private LocalDateTime date;
+
+    public PurchaseOrder(Product product, Supplier supplier, int quantity) {
+        this.id = count++;
+        this.product = product;
+        this.supplier = supplier;
+        this.quantity = quantity;
+        this.date = LocalDateTime.now();
+    }
+
+    @Override
+    public String toString() {
+        return "Order #" + id + ": " + quantity + " x " + product.getName() + " from " + supplier + " on " + date;
+    }
+}

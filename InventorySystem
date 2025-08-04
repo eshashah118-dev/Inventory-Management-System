@@ -1,0 +1,113 @@
+package inventorysystem;
+import java.util.*;
+
+public class InventorySystem {
+    private List<Product> products = new ArrayList<>();
+    private List<Supplier> suppliers = new ArrayList<>();
+    private List<PurchaseOrder> orders = new ArrayList<>();
+
+    private Scanner sc = new Scanner(System.in);
+
+    public void run() {
+        int choice;
+
+        do {
+            System.out.println("\n--- Inventory Management Menu ---");
+            System.out.println("1. Add Product");
+            System.out.println("2. Add Supplier");
+            System.out.println("3. Create Purchase Order");
+            System.out.println("4. View Inventory");
+            System.out.println("5. View Purchase Orders");
+            System.out.println("6. Exit");
+            System.out.print("Enter choice: ");
+            choice = sc.nextInt();
+            sc.nextLine(); // consume newline
+
+            switch (choice) {
+                case 1 -> addProduct();
+                case 2 -> addSupplier();
+                case 3 -> createOrder();
+                case 4 -> viewInventory();
+                case 5 -> viewOrders();
+                case 6 -> System.out.println("Exiting system.");
+                default -> System.out.println("Invalid choice.");
+            }
+
+        } while (choice != 6);
+    }
+
+    private void addProduct() {
+        System.out.print("Enter product name: ");
+        String name = sc.nextLine();
+        System.out.print("Enter stock quantity: ");
+        int qty = sc.nextInt();
+        sc.nextLine();
+
+        Product p = new Product(name, qty);
+        products.add(p);
+        System.out.println("Product added.");
+    }
+
+    private void addSupplier() {
+        System.out.print("Enter supplier name: ");
+        String name = sc.nextLine();
+        System.out.print("Enter supplier contact: ");
+        String contact = sc.nextLine();
+
+        Supplier s = new Supplier(name, contact);
+        suppliers.add(s);
+        System.out.println("Supplier added.");
+    }
+
+    private void createOrder() {
+        if (products.isEmpty() || suppliers.isEmpty()) {
+            System.out.println("Add products and suppliers first.");
+            return;
+        }
+
+        System.out.println("Choose product:");
+        for (int i = 0; i < products.size(); i++) {
+            System.out.println((i + 1) + ". " + products.get(i));
+        }
+        int pIdx = sc.nextInt() - 1;
+        sc.nextLine();
+
+        System.out.println("Choose supplier:");
+        for (int i = 0; i < suppliers.size(); i++) {
+            System.out.println((i + 1) + ". " + suppliers.get(i));
+        }
+        int sIdx = sc.nextInt() - 1;
+        sc.nextLine();
+
+        System.out.print("Enter quantity to order: ");
+        int qty = sc.nextInt();
+        sc.nextLine();
+
+        PurchaseOrder order = new PurchaseOrder(products.get(pIdx), suppliers.get(sIdx), qty);
+        orders.add(order);
+
+        products.get(pIdx).addStock(qty); // update inventory
+
+        System.out.println("Order placed and stock updated.");
+    }
+
+    private void viewInventory() {
+        if (products.isEmpty()) {
+            System.out.println("No products available.");
+            return;
+        }
+        for (Product p : products) {
+            System.out.println(p);
+        }
+    }
+
+    private void viewOrders() {
+        if (orders.isEmpty()) {
+            System.out.println("No orders yet.");
+            return;
+        }
+        for (PurchaseOrder po : orders) {
+            System.out.println(po);
+        }
+    }
+}

@@ -1,0 +1,16 @@
+package inventorysystem;
+
+public class Supplier {
+    private String name;
+    private String contact;
+
+    public Supplier(String name, String contact) {
+        this.name = name;
+        this.contact = contact;
+    }
+
+    @Override
+    public String toString() {
+        return name + " (Contact: " + contact + ")";
+    }
+}
